@@ -26,7 +26,7 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 // Add your functions below:
 
 
-let validateCred = (array) => {
+const validateCred = (array) => {
   let testArray = []
   let i = 0
   for (i=array.length - 1; i > -1; i--) {
@@ -54,4 +54,62 @@ let validateCred = (array) => {
   }
 }
 
-console.log(validateCred(invalid1))
+//Loop through an array of nested arrays
+//Check whether each array is valid or not
+//If it is, skip it
+//If it is not valid, add it to a new array
+//Return the new array of invalid cards
+
+const findInvalidCards = (nestedArray) => {
+  let invalidCards = []
+  for (i=0; i<nestedArray.length; i++) {
+    if (!validateCred(nestedArray[i])) {
+      invalidCards.push(nestedArray[i])
+    }
+  }
+  return invalidCards
+}
+
+//Loop through nested array of already invalid cards
+//For each entry, check the first digit and determine the company
+//Add that company to a new array of companies
+//Return an array of those companies without duplicates
+const idInvalidCardCompanies = (invalidCardArray) => {
+  let invalidCompanies = []
+  for (i=0; i<invalidCardArray.length; i++) {
+      switch(invalidCardArray[i][0]) {
+        case 3:
+          if (!invalidCompanies.includes('Amex (American Express)')) {
+          invalidCompanies.push('Amex (American Express)')
+          }
+          break;
+        case 4:
+          if (!invalidCompanies.includes('Visa')) {
+          invalidCompanies.push('Visa')
+          }
+          break;
+        case 5:
+          if (!invalidCompanies.includes('Mastercard')) {
+          invalidCompanies.push('Mastercard')
+          }
+          break;
+        case 6:
+          if (!invalidCompanies.includes('Discover')) {
+          invalidCompanies.push('Discover')
+          }
+          break;
+        default:
+          if (!invalidCompanies.includes('Company not found')) {
+          invalidCompanies.push('Company not found')
+          }
+     }
+    }
+    return invalidCompanies
+  }
+
+const checkCards = (batchOfArrays) => {
+  let invalidCards = findInvalidCards(batchOfArrays)
+  return idInvalidCardCompanies(invalidCards)
+}
+
+console.log(checkCards(batch))
